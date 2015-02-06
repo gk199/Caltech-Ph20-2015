@@ -1,0 +1,197 @@
+\documentclass[letterpaper,ams,secnumarabic,balancelastpage,amsmath,amssymb,nofootinbib]{revtex4}
+
+% Documentclass Options
+    % aps, prl stand for American Physical Society and Physical Review Letters respectively
+    % twocolumn permits two columns, of course
+    % nobalancelastpage doesn't attempt to equalize the lengths of the two columns on the last page
+        % as might be desired in a journal where articles follow one another closely
+    % amsmath and amssymb are necessary for the subequations environment among others
+    % secnumarabic identifies sections by number to aid electronic review and commentary.
+    % nofootinbib forces footnotes to occur on the page where they are first referenced
+        % and not in the bibliography
+    % REVTeX 4 is a set of macro packages designed to be used with LaTeX 2e.
+        % REVTeX is well-suited for preparing manuscripts for submission to APS journals.
+
+
+%\usepackage{lgrind}        % convert program listings to a form includable in a LaTeX document
+\usepackage{amscd}
+\usepackage{chapterbib}    % allows a bibliography for each chapter (each labguide has it's own)
+\usepackage{color}         % produces boxes or entire pages with colored backgrounds
+\usepackage{graphics}      % standard graphics specifications
+\usepackage[pdftex]{graphicx}      % alternative graphics specifications
+\usepackage{longtable}     % helps with long table options
+\usepackage{epsf}          % old package handles encapsulated post script issues
+\usepackage{bm}            % special 'bold-math' package
+%\usepackage{asymptote}     % For typesetting of mathematical illustrations
+\usepackage{thumbpdf}
+\usepackage[colorlinks=true]{hyperref}  % this package should be added after all others
+                                        % use as follows: \url{http://web.mit.edu/8.13}
+%\usepackage[letterpaper]{geometry}
+\usepackage{listings,xcolor}
+
+\lstset{language=Python}
+\lstset{basicstyle={\sffamily\footnotesize},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  numbersep=5pt,
+  breaklines=true,
+  captionpos={t},
+  frame={lines},
+  rulecolor=\color{black},
+  framerule=0.5pt,
+  tabsize=2
+}
+\lstdefinelanguage{Python}{
+ keywords={typeof, null, catch, switch, in, int, str, float, self},
+ keywordstyle=\color{ForestGreen}\bfseries,
+ ndkeywords={boolean, throw, import},
+ ndkeywords={return, class, if ,elif, endif, while, do, else, True, False , catch, def},
+ ndkeywordstyle=\color{BrickRed}\bfseries,
+ identifierstyle=\color{black},
+ sensitive=false,
+ comment=[l]{\#},
+ morecomment=[s]{/*}{*/},
+ commentstyle=\color{purple}\ttfamily,
+ stringstyle=\color{red}\ttfamily,
+}
+\newcommand{\rd}[1]{\mathop{\mathrm{d}#1}}
+\newcommand{\eten}[1]{\times10^{#1}}
+\newcommand{\sqrtgm}[0]{\sqrt{-g}}
+\newcommand{\sqrtgp}[0]{\sqrt{g}}
+\newcommand{\sqrtga}[0]{\sqrt{|g|}}
+
+%
+% And now, begin the document...
+% Students should not have to alter anything above this line
+%
+
+\begin{document}
+\title{Physics 20 P Set 3}
+\author{Gillian Kopp} 
+\affiliation{California Institute of Technology}
+\date{February 6, 2015}
+	
+\maketitle
+
+\begin{enumerate}
+{\large\item \textbf{}}
+A numerical investigation of the motion of a mass on a spring is done by using the explicit Euler method:
+$$
+\mathbf x_{i} = x_{i} + hv_{i}
+~~and~~
+\mathbf v_{i} = v_{i} - hx_{i}
+$$.
+
+\begin{figure}[h]
+\includegraphics[width=9cm]{spring.pdf}
+\caption{Plot of x and v vs time for a few cycles of oscillation, calculated with explicit Euler's method.}
+%\label{fig:disk}
+\end{figure}
+
+
+{\large\item \textbf{}}
+The analytic solution to the mass on a spring problem is:
+$$
+\mathbf x(t) = a cos(ct) + b sin (ct) 
+~~and~~
+\mathbf v(t) = -ac sin(ct) + bc cos(ct) $$
+where 
+$\mathbf a = x_{0}, b = v_{0}, and c = \sqrt[]{k/m} = 1 . $
+
+
+So, this leaves us with the analytical solution:
+$$
+\mathbf x(t) = x_{0} cos(t) + v_{0} sin(t) 
+~~and~~
+\mathbf v(t) = -x_{0} sin(t) + v_{0} cos(t) 
+$$
+And to find the global error, $x_{analytic} - x_{Euler's}$ is plotted vs time.
+\begin{figure}[h]
+\includegraphics[width=9cm]{analytic.pdf}
+\caption{This plot compares the analytic and numerical solutions, and plots the errors for comparison. This deals with the explicit Eulers method.}
+%\label{fig:disk}
+\end{figure}
+From this figure, it is clear that the analytic solution and explicit Euler's solution diverge within a few cycles.
+
+
+
+{\large\item \textbf{}}
+The maximum value for $x_{analytic} - x_{Euler's}$ is plotted vs h (step size) for h values
+$$\mathbf h = h_{0}, h_{0}/2, h_{0}/4, h_{0}/8, h_{0}/16 $$
+on a log-log plot, and we see that this is a linear relationship. So, when h is small, the truncation error is proportional to h.
+
+\begin{figure}[h]
+\includegraphics[width=9cm]{analytic-numerical.pdf}
+\caption{This plot plots the max value for the difference between x analytic and numeric vs h to show the truncation error.}
+%\label{fig:disk}
+\end{figure}
+
+
+{\large\item \textbf{}}
+The normalized total energy is
+$$\mathbf E = x^{2} + v^{2} $$
+Energy increases with time. This makes sense because the global errors (from question 2) also increase with time, so as error increases, we would expect energy to also increase.
+\begin{figure}[h]
+\includegraphics[width=9cm]{energy.pdf}
+\caption{This plots the total energy vs time.}
+%\label{fig:disk}
+\end{figure}
+
+
+{\large\item \textbf{}}
+We will solve the following system:
+$$
+\begin{pmatrix}
+1 & -h \\
+h & 1 \\
+\end{pmatrix}
+\begin{pmatrix}
+x_{i+1} \\
+v_{i+1} \\
+\end{pmatrix}
+=
+\begin{pmatrix}
+x_{i} \\
+v_{i} \\
+\end{pmatrix}
+$$
+$$
+\mathbf  x_{i} = x_{i+1} - hv_{i+1}
+~~~~~
+\mathbf  v_{i} = v_{i+1} + hx_{i+1}
+$$
+
+to obtain equations for the implicit Euler's method.
+And we want 
+$\mathbf x_{i+1} $
+and
+$\mathbf v_{i+1} $
+in terms of
+$\mathbf x_{i} $
+and
+$\mathbf v_{i} $,
+so we solve as follows:
+$$
+\mathbf x_{i+1} = \frac{x_{i} + hv_{i}}{1 + h^{2}}
+~~and~~
+\mathbf v_{i+1} = \frac{v_{i} - hx_{i} - hv_{i}}{1 - h}
+$$
+
+
+\begin{figure}[h]
+\includegraphics[width=9cm]{explicit_implicit.pdf}
+\caption{This plot shows how calculations of v and x differ when explicit or implicit Euler's method is used.}
+%\label{fig:disk}
+\end{figure}
+
+\begin{figure}[h]
+\includegraphics[width=9cm]{Energy_exim.pdf}
+\caption{This plot shows how calculations of total energy differ when explicit or implicit Euler's method is used.}
+%\label{fig:disk}
+\end{figure}
+
+Global error and total energy are plotted for both explicit and implicit Euler's calculations. With implicit calculations, global error does not increase as much as it does with explicit calculations. However, the energy starts at a higher value for implicit but reaches approximately the same final value.
+
+\end{enumerate}
+
+\end{document}

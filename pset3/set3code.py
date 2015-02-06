@@ -91,9 +91,9 @@ def truncation(xi, vi, h):
     plt.figure()
     plt.loglog(hlist, diff, label = "analytic numerical diff")
     plt.legend()
-    plt.savefig('analytic-numerical')
+    plt.savefig('analytic-numerical.pdf')
 
-
+ 
 # Problem 4, numerical evolution of total energy
 
 def energy(xi, vi, h):
@@ -185,7 +185,7 @@ def main():
         analytic(*args.analytic)
 
 
-    spring(0, 5, .1)
+    spring(0, 10, .1)
     analytic(0, 5, .1)
     truncation(0, 5, .1)
     energy(0, 5, .1)
